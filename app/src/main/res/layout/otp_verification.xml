@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="64dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:text="@string/enter_code"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+
+        <TextView
+            android:id="@+id/otp_message_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="32dp"
+            android:gravity="center_horizontal"
+            android:text="@string/otp_message"
+            android:textColor="#ababab"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/otp_edit_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="28dp"
+            android:hint="@string/otp"
+            android:inputType="numberSigned"
+            android:textAllCaps="true" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/otp_activity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_style"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/done"
+            android:textAllCaps="true"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/send_code_again_message_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:contextClickable="true"
+            android:gravity="center_horizontal"
+            android:text="@string/send_code_again_message"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</ScrollView>

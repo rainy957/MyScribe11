@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MyScribe</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="aadhaar_no">Aadhaar No.</string>
+    <string name="login_activity">login</string>
+    <string name="sign_up_activity">sign up</string>
+    <string name="forgot_password_redirect_text_view">Forgot Password?</string>
+    <string name="sign_up_redirect_text_view">New Here? Sign up.</string>
+    <string name="create_account">create account</string>
+    <string name="invalid_details">Invalid Username or Password</string>
+    <string name="password_error">Password too short.</string>
+    <string name="username_error">Username is already taken.</string>
+    <string name="facebook_app_id">1610807199231182</string>
+    <string name="send_code_again_message">send code again</string>
+    <string name="done">Done</string>
+    <string name="otp">OTP</string>
+    <string name="otp_message">A text message was sent to your number.</string>
+    <string name="enter_code">Enter your code</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="submit">submit</string>
+</resources>
