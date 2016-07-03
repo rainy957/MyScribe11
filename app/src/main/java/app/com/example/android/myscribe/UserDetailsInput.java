@@ -11,6 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class UserDetailsInput extends AppCompatActivity
 {
@@ -60,12 +67,9 @@ public class UserDetailsInput extends AppCompatActivity
                 }
                 else
                 {
-                    String title = "Registration Successful";
-                    String message = "Thank you for registering.Please login to activate you account.";
-                    openDialog(title,message);
+
                     registerUser(username_string,password_string);
-                    Intent launch_activity = new Intent(UserDetailsInput.this, MainActivity.class);
-                    startActivity(launch_activity);
+
                 }
             }
         });
@@ -111,7 +115,40 @@ public class UserDetailsInput extends AppCompatActivity
 
     private void registerUser(String username,String password)
     {
-        //TODO
+        SignUp signUp = new SignUp();
+        String aadhaar_no = signUp.getAadhaarNoString();
+
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean success = jsonObject.getBoolean("200 OK");
+                    if(success){
+                        String title = "Registration Successful";
+                        String message = "Thank you for registering.Please login to activate you account.";
+                        openDialog(title,message);
+                        Intent launch_activity = new Intent(UserDetailsInput.this, MainActivity.class);
+                        startActivity(launch_activity);
+                    }
+                    else{
+                        String title = "Registration Failed";
+                        String message = "Registration process failed.Please retry.";
+                        openDialog(title,message);
+                    }
+
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        RegisterationRequest registerationRequest = new RegisterationRequest(username,password,aadhaar_no,listener);
+        RequestQueue requestQueue = Volley.newRequestQueue(UserDetailsInput.this);
+        requestQueue.add(registerationRequest);
+
     }
 
 
