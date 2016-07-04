@@ -24,6 +24,11 @@ import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import junit.framework.Test;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,51 +119,46 @@ public class MainActivity extends AppCompatActivity
         }
         else
         {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if(response.toString().trim().equals("success"))
-                            {
-                                Context context = getApplicationContext();
-                                int duration = Toast.LENGTH_SHORT;
-                                CharSequence text = "Login Successful";
-                                Toast toast = Toast.makeText(context, text, duration);
-                                toast.show();
-                                //TODO replace SignUp.class
-                                Intent launch_activity = new Intent(MainActivity.this, SignUp.class);
-                                startActivity(launch_activity);
-                            }
-                            else
-                            {
-                                Context context = getApplicationContext();
-                                int duration = Toast.LENGTH_SHORT;
-                                Toast toast = Toast.makeText(context,response, duration);
-                                toast.show();
-                            }
-                        }
-                    },
-                    new ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
+
+               Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        boolean success = jsonObject.getBoolean("200 OK");
+
+                        if(success)
+                        {
                             Context context = getApplicationContext();
                             int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context,error.toString().trim(), duration);
+                            CharSequence text = "Login Successful";
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            String username_response = jsonObject.getString("username");
+                            //TODO replace SignUp.class
+                            Intent launch_activity = new Intent(MainActivity.this, Test.class);
+                            launch_activity.putExtra("username",username_response);
+                            startActivity(launch_activity);
+                        }
+                        else
+                        {
+                            Context context = getApplicationContext();
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context,response, duration);
                             toast.show();
                         }
-                    }){
-                @Override
-                protected Map <String,String> getParams() throws AuthFailureError{
-                    Map <String,String> map = new HashMap <>();
-                    map.put(username_key,username_string);
-                    map.put(password_key,password_string);
-                    return map;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
 
                 }
             };
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+            LoginRequest loginRequest = new LoginRequest(username_string,password_string,listener);
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            requestQueue.add(loginRequest);
 
         }
     }
