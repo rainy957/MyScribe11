@@ -2,6 +2,8 @@ package app.com.example.android.myscribe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,6 +71,12 @@ public class MainActivity extends AppCompatActivity
         sign_up_redirect = (TextView) findViewById(R.id.sign_up_redirect_text_view);
         facebook_login_activity_button = (Button) findViewById(R.id.facebook_login_activity_button);
 
+        if(!checkNetwork())
+        {
+            showToast("No Internet connection");
+            finish();
+        }
+
         login_activity_button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -83,6 +91,8 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 forgotPasswordRedirect();
+                //test
+
             }
         });
         sign_up_redirect.setOnClickListener(new View.OnClickListener()
@@ -104,6 +114,29 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void showToast(String text)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    private boolean checkNetwork()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getApplicationContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnected())
+        return true;
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     //submit login details
     private void submitForm()
     {
@@ -113,9 +146,7 @@ public class MainActivity extends AppCompatActivity
         int duration = Toast.LENGTH_SHORT;
         if(username_string.length()==0 || password_string.length()==0)
         {
-            CharSequence text = "Invalid Username or Password.";
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            showToast("Invalid Username or Password.");
         }
         else
         {
@@ -130,11 +161,7 @@ public class MainActivity extends AppCompatActivity
 
                         if(success)
                         {
-                            Context context = getApplicationContext();
-                            int duration = Toast.LENGTH_SHORT;
-                            CharSequence text = "Login Successful";
-                            Toast toast = Toast.makeText(context, text, duration);
-                            toast.show();
+                            showToast("Login successful");
                             String username_response = jsonObject.getString("username");
                             //TODO replace SignUp.class
                             Intent launch_activity = new Intent(MainActivity.this, Test.class);
@@ -143,10 +170,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
-                            Context context = getApplicationContext();
-                            int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context,response, duration);
-                            toast.show();
+                            showToast(response);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
